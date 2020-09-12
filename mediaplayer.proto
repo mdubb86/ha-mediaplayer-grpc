@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option go_package = "github.com/mdubb86/mediaplayer";
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.helloworld";
+option java_outer_classname = "HelloWorldProto";
+
+package mediaplayer;
+
+service MediaPlayer {
+  rpc SetVolume (SetVolumeReq) returns (SetVolumeRes) {}
+  rpc StreamUpdates(StreamUpdatesReq) returns (stream Update) {}
+}
+
+message SetVolumeReq {
+  float volume = 1;
+}
+
+message SetVolumeRes { }
+
+
+message StreamUpdatesReq { }
+
+message Update {
+  float volume = 1;
+  bool muted = 2;
+}
