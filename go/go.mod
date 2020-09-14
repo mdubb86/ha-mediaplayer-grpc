@@ -1,4 +1,4 @@
-module github.com/mdubb86/ha-mediaplayer-grpc/go
+module github.com/mdubb86/ha-mediaplayer-grpc
 
 go 1.15
 
