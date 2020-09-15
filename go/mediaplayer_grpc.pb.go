@@ -17,8 +17,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MediaPlayerClient interface {
-	SetVolume(ctx context.Context, in *SetVolumeReq, opts ...grpc.CallOption) (*SetVolumeRes, error)
-	StreamUpdates(ctx context.Context, in *StreamUpdatesReq, opts ...grpc.CallOption) (MediaPlayer_StreamUpdatesClient, error)
+	Communicate(ctx context.Context, opts ...grpc.CallOption) (MediaPlayer_CommunicateClient, error)
 }
 
 type mediaPlayerClient struct {
@@ -29,49 +28,36 @@ func NewMediaPlayerClient(cc grpc.ClientConnInterface) MediaPlayerClient {
 	return &mediaPlayerClient{cc}
 }
 
-var mediaPlayerSetVolumeStreamDesc = &grpc.StreamDesc{
-	StreamName: "SetVolume",
-}
-
-func (c *mediaPlayerClient) SetVolume(ctx context.Context, in *SetVolumeReq, opts ...grpc.CallOption) (*SetVolumeRes, error) {
-	out := new(SetVolumeRes)
-	err := c.cc.Invoke(ctx, "/mediaplayer.MediaPlayer/SetVolume", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-var mediaPlayerStreamUpdatesStreamDesc = &grpc.StreamDesc{
-	StreamName:    "StreamUpdates",
+var mediaPlayerCommunicateStreamDesc = &grpc.StreamDesc{
+	StreamName:    "Communicate",
 	ServerStreams: true,
+	ClientStreams: true,
 }
 
-func (c *mediaPlayerClient) StreamUpdates(ctx context.Context, in *StreamUpdatesReq, opts ...grpc.CallOption) (MediaPlayer_StreamUpdatesClient, error) {
-	stream, err := c.cc.NewStream(ctx, mediaPlayerStreamUpdatesStreamDesc, "/mediaplayer.MediaPlayer/StreamUpdates", opts...)
+func (c *mediaPlayerClient) Communicate(ctx context.Context, opts ...grpc.CallOption) (MediaPlayer_CommunicateClient, error) {
+	stream, err := c.cc.NewStream(ctx, mediaPlayerCommunicateStreamDesc, "/mediaplayer.MediaPlayer/Communicate", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &mediaPlayerStreamUpdatesClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
+	x := &mediaPlayerCommunicateClient{stream}
 	return x, nil
 }
 
-type MediaPlayer_StreamUpdatesClient interface {
+type MediaPlayer_CommunicateClient interface {
+	Send(*SetReq) error
 	Recv() (*Update, error)
 	grpc.ClientStream
 }
 
-type mediaPlayerStreamUpdatesClient struct {
+type mediaPlayerCommunicateClient struct {
 	grpc.ClientStream
 }
 
-func (x *mediaPlayerStreamUpdatesClient) Recv() (*Update, error) {
+func (x *mediaPlayerCommunicateClient) Send(m *SetReq) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *mediaPlayerCommunicateClient) Recv() (*Update, error) {
 	m := new(Update)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -84,74 +70,52 @@ func (x *mediaPlayerStreamUpdatesClient) Recv() (*Update, error) {
 // RegisterMediaPlayerService is called.  Any unassigned fields will result in the
 // handler for that method returning an Unimplemented error.
 type MediaPlayerService struct {
-	SetVolume     func(context.Context, *SetVolumeReq) (*SetVolumeRes, error)
-	StreamUpdates func(*StreamUpdatesReq, MediaPlayer_StreamUpdatesServer) error
+	Communicate func(MediaPlayer_CommunicateServer) error
 }
 
-func (s *MediaPlayerService) setVolume(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetVolumeReq)
-	if err := dec(in); err != nil {
+func (s *MediaPlayerService) communicate(_ interface{}, stream grpc.ServerStream) error {
+	return s.Communicate(&mediaPlayerCommunicateServer{stream})
+}
+
+type MediaPlayer_CommunicateServer interface {
+	Send(*Update) error
+	Recv() (*SetReq, error)
+	grpc.ServerStream
+}
+
+type mediaPlayerCommunicateServer struct {
+	grpc.ServerStream
+}
+
+func (x *mediaPlayerCommunicateServer) Send(m *Update) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *mediaPlayerCommunicateServer) Recv() (*SetReq, error) {
+	m := new(SetReq)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
-	if interceptor == nil {
-		return s.SetVolume(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     s,
-		FullMethod: "/mediaplayer.MediaPlayer/SetVolume",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return s.SetVolume(ctx, req.(*SetVolumeReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-func (s *MediaPlayerService) streamUpdates(_ interface{}, stream grpc.ServerStream) error {
-	m := new(StreamUpdatesReq)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return s.StreamUpdates(m, &mediaPlayerStreamUpdatesServer{stream})
-}
-
-type MediaPlayer_StreamUpdatesServer interface {
-	Send(*Update) error
-	grpc.ServerStream
-}
-
-type mediaPlayerStreamUpdatesServer struct {
-	grpc.ServerStream
-}
-
-func (x *mediaPlayerStreamUpdatesServer) Send(m *Update) error {
-	return x.ServerStream.SendMsg(m)
+	return m, nil
 }
 
 // RegisterMediaPlayerService registers a service implementation with a gRPC server.
 func RegisterMediaPlayerService(s grpc.ServiceRegistrar, srv *MediaPlayerService) {
 	srvCopy := *srv
-	if srvCopy.SetVolume == nil {
-		srvCopy.SetVolume = func(context.Context, *SetVolumeReq) (*SetVolumeRes, error) {
-			return nil, status.Errorf(codes.Unimplemented, "method SetVolume not implemented")
-		}
-	}
-	if srvCopy.StreamUpdates == nil {
-		srvCopy.StreamUpdates = func(*StreamUpdatesReq, MediaPlayer_StreamUpdatesServer) error {
-			return status.Errorf(codes.Unimplemented, "method StreamUpdates not implemented")
+	if srvCopy.Communicate == nil {
+		srvCopy.Communicate = func(MediaPlayer_CommunicateServer) error {
+			return status.Errorf(codes.Unimplemented, "method Communicate not implemented")
 		}
 	}
 	sd := grpc.ServiceDesc{
 		ServiceName: "mediaplayer.MediaPlayer",
-		Methods: []grpc.MethodDesc{
-			{
-				MethodName: "SetVolume",
-				Handler:    srvCopy.setVolume,
-			},
-		},
+		Methods:     []grpc.MethodDesc{},
 		Streams: []grpc.StreamDesc{
 			{
-				StreamName:    "StreamUpdates",
-				Handler:       srvCopy.streamUpdates,
+				StreamName:    "Communicate",
+				Handler:       srvCopy.communicate,
 				ServerStreams: true,
+				ClientStreams: true,
 			},
 		},
 		Metadata: "mediaplayer.proto",
@@ -169,14 +133,9 @@ func RegisterMediaPlayerService(s grpc.ServiceRegistrar, srv *MediaPlayerService
 func NewMediaPlayerService(s interface{}) *MediaPlayerService {
 	ns := &MediaPlayerService{}
 	if h, ok := s.(interface {
-		SetVolume(context.Context, *SetVolumeReq) (*SetVolumeRes, error)
+		Communicate(MediaPlayer_CommunicateServer) error
 	}); ok {
-		ns.SetVolume = h.SetVolume
-	}
-	if h, ok := s.(interface {
-		StreamUpdates(*StreamUpdatesReq, MediaPlayer_StreamUpdatesServer) error
-	}); ok {
-		ns.StreamUpdates = h.StreamUpdates
+		ns.Communicate = h.Communicate
 	}
 	return ns
 }
@@ -186,6 +145,5 @@ func NewMediaPlayerService(s interface{}) *MediaPlayerService {
 // definition, which is not a backward-compatible change.  For this reason,
 // use of this type is not recommended.
 type UnstableMediaPlayerService interface {
-	SetVolume(context.Context, *SetVolumeReq) (*SetVolumeRes, error)
-	StreamUpdates(*StreamUpdatesReq, MediaPlayer_StreamUpdatesServer) error
+	Communicate(MediaPlayer_CommunicateServer) error
 }

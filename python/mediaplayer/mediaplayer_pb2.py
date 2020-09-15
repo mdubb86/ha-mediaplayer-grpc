@@ -19,22 +19,22 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'\n\033io.grpc.examples.helloworldB\017HelloWorldProtoP\001Z\036github.com/mdubb86/mediaplayer',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x11mediaplayer.proto\x12\x0bmediaplayer\"\x1e\n\x0cSetVolumeReq\x12\x0e\n\x06volume\x18\x01 \x01(\x02\"\x0e\n\x0cSetVolumeRes\"\x12\n\x10StreamUpdatesReq\"\'\n\x06Update\x12\x0e\n\x06volume\x18\x01 \x01(\x02\x12\r\n\x05muted\x18\x02 \x01(\x08\x32\x9b\x01\n\x0bMediaPlayer\x12\x43\n\tSetVolume\x12\x19.mediaplayer.SetVolumeReq\x1a\x19.mediaplayer.SetVolumeRes\"\x00\x12G\n\rStreamUpdates\x12\x1d.mediaplayer.StreamUpdatesReq\x1a\x13.mediaplayer.Update\"\x00\x30\x01\x42P\n\x1bio.grpc.examples.helloworldB\x0fHelloWorldProtoP\x01Z\x1egithub.com/mdubb86/mediaplayerb\x06proto3'
+  serialized_pb=b'\n\x11mediaplayer.proto\x12\x0bmediaplayer\"\x18\n\x06SetReq\x12\x0e\n\x06volume\x18\x01 \x01(\x02\"\x18\n\x06Update\x12\x0e\n\x06volume\x18\x01 \x01(\x02\x32L\n\x0bMediaPlayer\x12=\n\x0b\x43ommunicate\x12\x13.mediaplayer.SetReq\x1a\x13.mediaplayer.Update\"\x00(\x01\x30\x01\x42P\n\x1bio.grpc.examples.helloworldB\x0fHelloWorldProtoP\x01Z\x1egithub.com/mdubb86/mediaplayerb\x06proto3'
 )
 
 
 
 
-_SETVOLUMEREQ = _descriptor.Descriptor(
-  name='SetVolumeReq',
-  full_name='mediaplayer.SetVolumeReq',
+_SETREQ = _descriptor.Descriptor(
+  name='SetReq',
+  full_name='mediaplayer.SetReq',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='volume', full_name='mediaplayer.SetVolumeReq.volume', index=0,
+      name='volume', full_name='mediaplayer.SetReq.volume', index=0,
       number=1, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
@@ -53,57 +53,7 @@ _SETVOLUMEREQ = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=34,
-  serialized_end=64,
-)
-
-
-_SETVOLUMERES = _descriptor.Descriptor(
-  name='SetVolumeRes',
-  full_name='mediaplayer.SetVolumeRes',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=66,
-  serialized_end=80,
-)
-
-
-_STREAMUPDATESREQ = _descriptor.Descriptor(
-  name='StreamUpdatesReq',
-  full_name='mediaplayer.StreamUpdatesReq',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=82,
-  serialized_end=100,
+  serialized_end=58,
 )
 
 
@@ -122,13 +72,6 @@ _UPDATE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='muted', full_name='mediaplayer.Update.muted', index=1,
-      number=2, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -141,36 +84,20 @@ _UPDATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=102,
-  serialized_end=141,
+  serialized_start=60,
+  serialized_end=84,
 )
 
-DESCRIPTOR.message_types_by_name['SetVolumeReq'] = _SETVOLUMEREQ
-DESCRIPTOR.message_types_by_name['SetVolumeRes'] = _SETVOLUMERES
-DESCRIPTOR.message_types_by_name['StreamUpdatesReq'] = _STREAMUPDATESREQ
+DESCRIPTOR.message_types_by_name['SetReq'] = _SETREQ
 DESCRIPTOR.message_types_by_name['Update'] = _UPDATE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-SetVolumeReq = _reflection.GeneratedProtocolMessageType('SetVolumeReq', (_message.Message,), {
-  'DESCRIPTOR' : _SETVOLUMEREQ,
+SetReq = _reflection.GeneratedProtocolMessageType('SetReq', (_message.Message,), {
+  'DESCRIPTOR' : _SETREQ,
   '__module__' : 'mediaplayer_pb2'
-  # @@protoc_insertion_point(class_scope:mediaplayer.SetVolumeReq)
+  # @@protoc_insertion_point(class_scope:mediaplayer.SetReq)
   })
-_sym_db.RegisterMessage(SetVolumeReq)
-
-SetVolumeRes = _reflection.GeneratedProtocolMessageType('SetVolumeRes', (_message.Message,), {
-  'DESCRIPTOR' : _SETVOLUMERES,
-  '__module__' : 'mediaplayer_pb2'
-  # @@protoc_insertion_point(class_scope:mediaplayer.SetVolumeRes)
-  })
-_sym_db.RegisterMessage(SetVolumeRes)
-
-StreamUpdatesReq = _reflection.GeneratedProtocolMessageType('StreamUpdatesReq', (_message.Message,), {
-  'DESCRIPTOR' : _STREAMUPDATESREQ,
-  '__module__' : 'mediaplayer_pb2'
-  # @@protoc_insertion_point(class_scope:mediaplayer.StreamUpdatesReq)
-  })
-_sym_db.RegisterMessage(StreamUpdatesReq)
+_sym_db.RegisterMessage(SetReq)
 
 Update = _reflection.GeneratedProtocolMessageType('Update', (_message.Message,), {
   'DESCRIPTOR' : _UPDATE,
@@ -189,25 +116,15 @@ _MEDIAPLAYER = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=144,
-  serialized_end=299,
+  serialized_start=86,
+  serialized_end=162,
   methods=[
   _descriptor.MethodDescriptor(
-    name='SetVolume',
-    full_name='mediaplayer.MediaPlayer.SetVolume',
+    name='Communicate',
+    full_name='mediaplayer.MediaPlayer.Communicate',
     index=0,
     containing_service=None,
-    input_type=_SETVOLUMEREQ,
-    output_type=_SETVOLUMERES,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='StreamUpdates',
-    full_name='mediaplayer.MediaPlayer.StreamUpdates',
-    index=1,
-    containing_service=None,
-    input_type=_STREAMUPDATESREQ,
+    input_type=_SETREQ,
     output_type=_UPDATE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,

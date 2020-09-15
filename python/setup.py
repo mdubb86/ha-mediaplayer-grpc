@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="ha-mediaplayer-grpc",
-    version="0.0.12",
+    version="0.1.2",
     description="Generated GRPC Python code for implementing a Home Assistant Media Player integration",
     long_description=README,
     long_description_content_type="text/markdown",
