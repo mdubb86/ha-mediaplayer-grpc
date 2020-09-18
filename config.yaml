@@ -1,0 +1,22 @@
+project: ha-mediaplayer-grpc
+target: mediaplayer
+version: 0.1.4
+repo: https://github.com/mdubb86/ha-mediaplayer-grpc
+description: Generated GRPC client/server code for implementing a Home Assistant Media Player integration
+git:
+  name: Michael W
+  email: mdubb86@email.com
+python:
+  enabled: true
+  index:
+    domain: upload.pypi.org
+    username: !secret pypi_username
+    password: !secret pypi_password
+go:
+  enabled: true
+  module: github.com/mdubb86/ha-mediaplayer-grpc-go
+  repo: 
+    ssh_url: git@github.com:mdubb86/ha-mediaplayer-grpc-go.git
+    key: !secret go_repo_key
+user: "Michael Waage"
+email: "mtwaage@gmail.com"

@@ -8,16 +8,17 @@ option java_outer_classname = "HelloWorldProto";
 package mediaplayer;
 
 service MediaPlayer {
-  rpc Communicate(stream SetReq) returns (stream Update) {}
+	rpc Communicate(stream Request) returns (stream Response) {}
 }
 
-message SetReq {
-  float volume = 1;
+message Request {
+	string control= 1;
+  	float volume = 2;
+  	bool muted = 3;
 }
 
-message Update {
-  float volume = 1;
+message Response {
+	string control= 1;
+  	float volume = 2;
+  	bool muted = 3;
 }
-
-
-

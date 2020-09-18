@@ -44,8 +44,8 @@ func (c *mediaPlayerClient) Communicate(ctx context.Context, opts ...grpc.CallOp
 }
 
 type MediaPlayer_CommunicateClient interface {
-	Send(*SetReq) error
-	Recv() (*Update, error)
+	Send(*Request) error
+	Recv() (*Response, error)
 	grpc.ClientStream
 }
 
@@ -53,12 +53,12 @@ type mediaPlayerCommunicateClient struct {
 	grpc.ClientStream
 }
 
-func (x *mediaPlayerCommunicateClient) Send(m *SetReq) error {
+func (x *mediaPlayerCommunicateClient) Send(m *Request) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *mediaPlayerCommunicateClient) Recv() (*Update, error) {
-	m := new(Update)
+func (x *mediaPlayerCommunicateClient) Recv() (*Response, error) {
+	m := new(Response)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -78,8 +78,8 @@ func (s *MediaPlayerService) communicate(_ interface{}, stream grpc.ServerStream
 }
 
 type MediaPlayer_CommunicateServer interface {
-	Send(*Update) error
-	Recv() (*SetReq, error)
+	Send(*Response) error
+	Recv() (*Request, error)
 	grpc.ServerStream
 }
 
@@ -87,12 +87,12 @@ type mediaPlayerCommunicateServer struct {
 	grpc.ServerStream
 }
 
-func (x *mediaPlayerCommunicateServer) Send(m *Update) error {
+func (x *mediaPlayerCommunicateServer) Send(m *Response) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *mediaPlayerCommunicateServer) Recv() (*SetReq, error) {
-	m := new(SetReq)
+func (x *mediaPlayerCommunicateServer) Recv() (*Request, error) {
+	m := new(Request)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -122,28 +122,4 @@ func RegisterMediaPlayerService(s grpc.ServiceRegistrar, srv *MediaPlayerService
 	}
 
 	s.RegisterService(&sd, nil)
-}
-
-// NewMediaPlayerService creates a new MediaPlayerService containing the
-// implemented methods of the MediaPlayer service in s.  Any unimplemented
-// methods will result in the gRPC server returning an UNIMPLEMENTED status to the client.
-// This includes situations where the method handler is misspelled or has the wrong
-// signature.  For this reason, this function should be used with great care and
-// is not recommended to be used by most users.
-func NewMediaPlayerService(s interface{}) *MediaPlayerService {
-	ns := &MediaPlayerService{}
-	if h, ok := s.(interface {
-		Communicate(MediaPlayer_CommunicateServer) error
-	}); ok {
-		ns.Communicate = h.Communicate
-	}
-	return ns
-}
-
-// UnstableMediaPlayerService is the service API for MediaPlayer service.
-// New methods may be added to this interface if they are added to the service
-// definition, which is not a backward-compatible change.  For this reason,
-// use of this type is not recommended.
-type UnstableMediaPlayerService interface {
-	Communicate(MediaPlayer_CommunicateServer) error
 }

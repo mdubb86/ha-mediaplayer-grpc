@@ -17,26 +17,40 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='mediaplayer.proto',
   package='mediaplayer',
   syntax='proto3',
-  serialized_options=b'\n\033io.grpc.examples.helloworldB\017HelloWorldProtoP\001Z\036github.com/mdubb86/mediaplayer',
+  serialized_options=b'\n\033io.grpc.examples.helloworldB\017HelloWorldProtoP\001Z5github.com/mdubb86/ha-mediaplayer-grpc/go/mediaplayer',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x11mediaplayer.proto\x12\x0bmediaplayer\"\x18\n\x06SetReq\x12\x0e\n\x06volume\x18\x01 \x01(\x02\"\x18\n\x06Update\x12\x0e\n\x06volume\x18\x01 \x01(\x02\x32L\n\x0bMediaPlayer\x12=\n\x0b\x43ommunicate\x12\x13.mediaplayer.SetReq\x1a\x13.mediaplayer.Update\"\x00(\x01\x30\x01\x42P\n\x1bio.grpc.examples.helloworldB\x0fHelloWorldProtoP\x01Z\x1egithub.com/mdubb86/mediaplayerb\x06proto3'
+  serialized_pb=b'\n\x11mediaplayer.proto\x12\x0bmediaplayer\"9\n\x07Request\x12\x0f\n\x07\x63ontrol\x18\x01 \x01(\t\x12\x0e\n\x06volume\x18\x02 \x01(\x02\x12\r\n\x05muted\x18\x03 \x01(\x08\":\n\x08Response\x12\x0f\n\x07\x63ontrol\x18\x01 \x01(\t\x12\x0e\n\x06volume\x18\x02 \x01(\x02\x12\r\n\x05muted\x18\x03 \x01(\x08\x32O\n\x0bMediaPlayer\x12@\n\x0b\x43ommunicate\x12\x14.mediaplayer.Request\x1a\x15.mediaplayer.Response\"\x00(\x01\x30\x01\x42g\n\x1bio.grpc.examples.helloworldB\x0fHelloWorldProtoP\x01Z5github.com/mdubb86/ha-mediaplayer-grpc/go/mediaplayerb\x06proto3'
 )
 
 
 
 
-_SETREQ = _descriptor.Descriptor(
-  name='SetReq',
-  full_name='mediaplayer.SetReq',
+_REQUEST = _descriptor.Descriptor(
+  name='Request',
+  full_name='mediaplayer.Request',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='volume', full_name='mediaplayer.SetReq.volume', index=0,
-      number=1, type=2, cpp_type=6, label=1,
+      name='control', full_name='mediaplayer.Request.control', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='volume', full_name='mediaplayer.Request.volume', index=1,
+      number=2, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='muted', full_name='mediaplayer.Request.muted', index=2,
+      number=3, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -53,22 +67,36 @@ _SETREQ = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=34,
-  serialized_end=58,
+  serialized_end=91,
 )
 
 
-_UPDATE = _descriptor.Descriptor(
-  name='Update',
-  full_name='mediaplayer.Update',
+_RESPONSE = _descriptor.Descriptor(
+  name='Response',
+  full_name='mediaplayer.Response',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='volume', full_name='mediaplayer.Update.volume', index=0,
-      number=1, type=2, cpp_type=6, label=1,
+      name='control', full_name='mediaplayer.Response.control', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='volume', full_name='mediaplayer.Response.volume', index=1,
+      number=2, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='muted', full_name='mediaplayer.Response.muted', index=2,
+      number=3, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -84,27 +112,27 @@ _UPDATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=60,
-  serialized_end=84,
+  serialized_start=93,
+  serialized_end=151,
 )
 
-DESCRIPTOR.message_types_by_name['SetReq'] = _SETREQ
-DESCRIPTOR.message_types_by_name['Update'] = _UPDATE
+DESCRIPTOR.message_types_by_name['Request'] = _REQUEST
+DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-SetReq = _reflection.GeneratedProtocolMessageType('SetReq', (_message.Message,), {
-  'DESCRIPTOR' : _SETREQ,
+Request = _reflection.GeneratedProtocolMessageType('Request', (_message.Message,), {
+  'DESCRIPTOR' : _REQUEST,
   '__module__' : 'mediaplayer_pb2'
-  # @@protoc_insertion_point(class_scope:mediaplayer.SetReq)
+  # @@protoc_insertion_point(class_scope:mediaplayer.Request)
   })
-_sym_db.RegisterMessage(SetReq)
+_sym_db.RegisterMessage(Request)
 
-Update = _reflection.GeneratedProtocolMessageType('Update', (_message.Message,), {
-  'DESCRIPTOR' : _UPDATE,
+Response = _reflection.GeneratedProtocolMessageType('Response', (_message.Message,), {
+  'DESCRIPTOR' : _RESPONSE,
   '__module__' : 'mediaplayer_pb2'
-  # @@protoc_insertion_point(class_scope:mediaplayer.Update)
+  # @@protoc_insertion_point(class_scope:mediaplayer.Response)
   })
-_sym_db.RegisterMessage(Update)
+_sym_db.RegisterMessage(Response)
 
 
 DESCRIPTOR._options = None
@@ -116,16 +144,16 @@ _MEDIAPLAYER = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=86,
-  serialized_end=162,
+  serialized_start=153,
+  serialized_end=232,
   methods=[
   _descriptor.MethodDescriptor(
     name='Communicate',
     full_name='mediaplayer.MediaPlayer.Communicate',
     index=0,
     containing_service=None,
-    input_type=_SETREQ,
-    output_type=_UPDATE,
+    input_type=_REQUEST,
+    output_type=_RESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
