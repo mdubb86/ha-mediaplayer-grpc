@@ -1,6 +1,6 @@
 project: ha-mediaplayer-grpc
 target: mediaplayer
-version: 0.1.4
+version: 0.1.6
 repo: https://github.com/mdubb86/ha-mediaplayer-grpc
 description: Generated GRPC client/server code for implementing a Home Assistant Media Player integration
 git:
